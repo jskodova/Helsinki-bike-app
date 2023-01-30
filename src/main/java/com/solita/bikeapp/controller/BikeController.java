@@ -1,5 +1,6 @@
 package com.solita.bikeapp.controller;
 
+import com.solita.bikeapp.message.Response;
 import com.solita.bikeapp.method.CSVReader;
 import com.solita.bikeapp.model.Bike;
 import com.solita.bikeapp.service.CSVService;
@@ -20,7 +21,7 @@ public class BikeController {
     CSVService fileService;
 
     @PostMapping("/upload")
-    public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<Response> uploadFile(@RequestParam("file") MultipartFile file) {
         String message = "";
 
         if (CSVReader.hasCSVFormat(file)) {
@@ -28,15 +29,15 @@ public class BikeController {
                 fileService.save(file);
 
                 message = "File upload was successful: " + file.getOriginalFilename();
-                return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+                return ResponseEntity.status(HttpStatus.OK).body(new Response(message));
             } catch (Exception e) {
                 message = "File upload was not successful: " + file.getOriginalFilename() + "!";
-                return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
+                return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new Response(message));
             }
         }
 
         message = "Please provide a csv file!";
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(message));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(message));
     }
 
     @GetMapping("/bikes")
