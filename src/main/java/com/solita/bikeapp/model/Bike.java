@@ -41,4 +41,7 @@ public class Bike {
 
     public Bike() {
     }
+
+    public Bike(java.util.Date departureTime, java.util.Date returnTime, String depStationID, String depStationName, String retStationID, String retStationName, int distance, int duration) {
+    }
 }
