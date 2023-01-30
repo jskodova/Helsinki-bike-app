@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.List;
 
 @CrossOrigin("http://localhost:8081")
@@ -21,23 +22,27 @@ public class BikeController {
     CSVService fileService;
 
     @PostMapping("/upload")
-    public ResponseEntity<Response> uploadFile(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<Response> uploadFile() {
         String message = "";
 
-        if (CSVReader.hasCSVFormat(file)) {
-            try {
-                fileService.save(file);
+        File file1 = null;
+        File file2 = null;
+        File file3 = null;
+        try {
+            file1 = new File("file1.csv");
+            file2 = new File("file2.csv");
+            file3 = new File("file3.csv");
 
-                message = "File upload was successful: " + file.getOriginalFilename();
-                return ResponseEntity.status(HttpStatus.OK).body(new Response(message));
-            } catch (Exception e) {
-                message = "File upload was not successful: " + file.getOriginalFilename() + "!";
-                return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new Response(message));
-            }
+            fileService.save((MultipartFile) file1);
+            fileService.save((MultipartFile) file2);
+            fileService.save((MultipartFile) file3);
+
+            message = "Files upload was successful: " + file1.getName() + ", " + file2.getName() + ", " + file3.getName();
+            return ResponseEntity.status(HttpStatus.OK).body(new Response(message));
+        } catch (Exception e) {
+            message = "Files upload was not successful: " + file1.getName() + ", " + file2.getName() + ", " + file3.getName() + "!";
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new Response(message));
         }
-
-        message = "Please provide a csv file!";
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(message));
     }
 
     @GetMapping("/bikes")
