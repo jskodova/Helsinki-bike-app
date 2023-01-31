@@ -1,7 +1,6 @@
 package com.solita.bikeapp.controller;
 
 import com.solita.bikeapp.message.Response;
-import com.solita.bikeapp.method.CSVReader;
 import com.solita.bikeapp.model.Bike;
 import com.solita.bikeapp.service.CSVService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,7 @@ public class BikeController {
 
     @PostMapping("/upload")
     public ResponseEntity<Response> uploadFile() {
-        String message = "";
+        String message;
 
         File file1 = null;
         File file2 = null;
