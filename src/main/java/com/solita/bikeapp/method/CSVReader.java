@@ -33,18 +33,11 @@ public class CSVReader {
         }
         return false;
     }
-<<<<<<< Updated upstream
-    public static List<Bike> csvToBike(InputStream is) {
-        try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-             CSVParser csvParser = new CSVParser(fileReader,
-                     CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim());) {
-=======
 
     public static List<Bike> csvToBikes(File file) {
         try (BufferedReader br = new BufferedReader(new FileReader(file));
              CSVParser csvParser = new CSVParser(br,
                      CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim())) {
->>>>>>> Stashed changes
 
             List<Bike> bikes = new ArrayList<Bike>();
 
