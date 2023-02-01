@@ -1,6 +1,7 @@
 package com.solita.bikeapp.controller;
 
 import com.solita.bikeapp.message.Response;
+import com.solita.bikeapp.method.CSVReader;
 import com.solita.bikeapp.model.Bike;
 import com.solita.bikeapp.service.CSVService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,39 +9,30 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.List;
 
-@CrossOrigin("http://localhost:8081")
+@CrossOrigin("http://localhost:8080")
 @Controller
 @RequestMapping("/api/csv")
 public class BikeController {
     @Autowired
     CSVService fileService;
 
-    @PostMapping("/upload")
-    public ResponseEntity<Response> uploadFile() {
+    @PostMapping("/savetoDB")
+    public ResponseEntity<Response> savetoDB(@RequestParam("file") File file) {
         String message;
+        if (CSVReader.isCSV(file)) {
+            try {
+                fileService.saveAllFilesInRepository();
 
-        File file1 = null;
-        File file2 = null;
-        File file3 = null;
-        try {
-            file1 = new File("file1.csv");
-            file2 = new File("file2.csv");
-            file3 = new File("file3.csv");
-
-            fileService.save((MultipartFile) file1);
-            fileService.save((MultipartFile) file2);
-            fileService.save((MultipartFile) file3);
-
-            message = "Files upload was successful: " + file1.getName() + ", " + file2.getName() + ", " + file3.getName();
-            return ResponseEntity.status(HttpStatus.OK).body(new Response(message));
-        } catch (Exception e) {
-            message = "Files upload was not successful: " + file1.getName() + ", " + file2.getName() + ", " + file3.getName() + "!";
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new Response(message));
+                message = "Files reading was successful!";
+                return ResponseEntity.status(HttpStatus.OK).body(new Response(message));
+            } catch (Exception e) {
+                message = "Files reading was not successful!";
+                return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new Response(message));
+            }
         }
     }
 
