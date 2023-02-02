@@ -5,18 +5,16 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-import java.util.Date;
-
-
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "bikes")
 public class Bike {
 
     @Column(name = "departureTime")
-    private Date departureTime;
+    private LocalDateTime departureTime;
     @Column(name = "returnTime")
-    private Date returnTime;
+    private LocalDateTime returnTime;
     @Id
     @Column(name = "depStationID")
     private int depStationID;
@@ -27,24 +25,24 @@ public class Bike {
     @Column(name = "retStationName")
     private String retStationName;
     @Column(name = "distance")
-    private int distance;
+    private float distance;
     @Column(name = "duration")
     private int duration;
 
 
-    public Date getDepartureTime() {
+    public LocalDateTime getDepartureTime() {
         return departureTime;
     }
 
-    public void setDepartureTime(Date departureTime) {
+    public void setDepartureTime(LocalDateTime departureTime) {
         this.departureTime = departureTime;
     }
 
-    public Date getReturnTime() {
+    public LocalDateTime getReturnTime() {
         return returnTime;
     }
 
-    public void setReturnTime(Date returnTime) {
+    public void setReturnTime(LocalDateTime returnTime) {
         this.returnTime = returnTime;
     }
 
@@ -80,11 +78,11 @@ public class Bike {
         this.retStationName = retStationName;
     }
 
-    public int getDistance() {
+    public float getDistance() {
         return distance;
     }
 
-    public void setDistance(int distance) {
+    public void setDistance(float distance) {
         this.distance = distance;
     }
 
@@ -96,7 +94,7 @@ public class Bike {
         this.duration = duration;
     }
 
-    public Bike(Date departureTime, Date returnTime, int depStationID, String depStationName, int retStationID, String retStationName, int distance, int duration) {
+    public Bike(LocalDateTime departureTime, LocalDateTime returnTime, int depStationID, String depStationName, int retStationID, String retStationName, float distance, int duration) {
         this.departureTime = departureTime;
         this.returnTime = returnTime;
         this.depStationID = depStationID;
@@ -110,7 +108,7 @@ public class Bike {
     public Bike() {
     }
 
-    public Bike(java.util.Date departureTime, java.util.Date returnTime, String depStationID, String depStationName, String retStationID, String retStationName, int distance, int duration) {
+    public Bike(LocalDateTime departureTime, LocalDateTime returnTime, String depStationID, String depStationName, String retStationID, String retStationName, float distance, int duration) {
     }
 
     @Override
@@ -141,5 +139,6 @@ public class Bike {
     protected Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
+
 
 }
