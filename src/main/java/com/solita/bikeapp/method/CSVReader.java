@@ -1,64 +1,102 @@
 package com.solita.bikeapp.method;
 
 import com.solita.bikeapp.model.Bike;
+import com.solita.bikeapp.repository.BikeRepository;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
+@Service
 public class CSVReader {
-    public static String TYPE = "text/csv";
-    static String[] headers = {"departureTime", "returnTime", "depStationID", "depStationName", "retStationID", "retStationName", "distance", "duration"};
 
-    public static boolean isCSV(File csvfile) {
-        try {
-            FileReader reader = new FileReader(csvfile);
-            Scanner scanner = new Scanner(reader);
-            String line = scanner.nextLine();
-            String[] values = line.split(",");
-            if (values.length > 1) {
-                return true;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
+    List<String> fileNames;
+    static String[] HEADERS = {"Departure", "Return", "Departure station id", "Departure station name", "Return station id", "Return station name", "Covered distance (m)", "Duration (sec.)"};
+    public static List<Bike> bikes = new ArrayList<>();
+    @Autowired
+    public final BikeRepository bikeRepository;
+
+    public CSVReader(List<String> fileNames, BikeRepository bikeRepository) {
+        this.fileNames = fileNames;
+        this.bikeRepository = bikeRepository;
+        fileNames.add("src/main/resources/csv/2021-05.csv");
     }
 
-    public static List<Bike> csvToBikes(File file) {
-        try (BufferedReader br = new BufferedReader(new FileReader(file));
-             CSVParser csvParser = new CSVParser(br,
-                     CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim())) {
+    public void readCSV() throws IOException {
+        for (String fileName : fileNames) {
+            final BufferedReader fileReader = new BufferedReader(new FileReader((fileName)));
+            System.out.print("Trying to read csv");
 
-            List<Bike> bikes = new ArrayList<>();
+            CSVParser csvParser = new CSVParser(fileReader,
+                    CSVFormat.Builder.create()
+                            .setHeader(HEADERS)
+                            .setIgnoreEmptyLines(true)
+                            .setSkipHeaderRecord(true)
+                            .setTrim(true)
+                            .build());
+            try {
+                for (final CSVRecord csvRecord : csvParser) {
+                    String csvError = validateCsvRecord(csvRecord);
+                    if (csvError != null && !csvError.isEmpty()) {
+                        System.out.println("Error in CSV File: " + csvError);
+                        return;
+                    }
+                    Bike bike = new Bike();
+                    bike.setDepartureTime(LocalDateTime.parse(csvRecord.get("Departure")));
+                    bike.setReturnTime(LocalDateTime.parse(csvRecord.get("Return")));
+                    bike.setDepStationID(Integer.parseInt(csvRecord.get("Departure station id")));
+                    bike.setDepStationName(csvRecord.get("Departure station name"));
+                    bike.setRetStationID(Integer.parseInt(csvRecord.get("Return station id")));
+                    bike.setRetStationName(csvRecord.get("Return station name"));
+                    bike.setDistance((Float.parseFloat(csvRecord.get("Covered distance (m)"))) / 10);
+                    bike.setDuration(Integer.parseInt(csvRecord.get("Duration (sec.)")));
 
-            Iterable<CSVRecord> csvRecords = csvParser.getRecords();
-
-            for (CSVRecord csvRecord : csvRecords) {
-                Bike bike = new Bike(
-                        Date.valueOf(csvRecord.get("departureTime")),
-                        Date.valueOf(csvRecord.get("returnTime")),
-                        csvRecord.get("depStationID"),
-                        csvRecord.get("depStationName"),
-                        csvRecord.get("retStationID"),
-                        csvRecord.get("retStationName"),
-                        Integer.parseInt(csvRecord.get("distance")),
-                        Integer.parseInt(csvRecord.get("duration"))
-                );
-                bikes.add(bike);
+                    if (bike.getDistance() > 0.01 && bike.getDuration() > 10) {
+                        bikes.add(bike);
+                        bikeRepository.save(bike);
+                    }
+                    bikes.add(bike);
+                    bikeRepository.save(bike);
+                }
+            } finally {
+                fileReader.close();
             }
-
-            return bikes;
-        } catch (IOException e) {
-            throw new RuntimeException("fail to parse CSV file: " + e.getMessage());
         }
+    }
+
+    private String validateCsvRecord(CSVRecord csvRecord) {
+        if (csvRecord.get("Departure") == null || csvRecord.get("Departure").isEmpty()) {
+            return "Departure field is empty";
+        }
+        if (csvRecord.get("Return") == null || csvRecord.get("Return").isEmpty()) {
+            return "Return field is empty";
+        }
+        if (csvRecord.get("Departure station id") == null || csvRecord.get("Departure station id").isEmpty()) {
+            return "Departure station id field is empty";
+        }
+        if (csvRecord.get("Departure station name") == null || csvRecord.get("Departure station name").isEmpty()) {
+            return "Departure station name field is empty";
+        }
+        if (csvRecord.get("Return station id") == null || csvRecord.get("Return station id").isEmpty()) {
+            return "Return station id field is empty";
+        }
+        if (csvRecord.get("Return station name") == null || csvRecord.get("Return station name").isEmpty()) {
+            return "Return station name field is empty";
+        }
+        if (csvRecord.get("Covered distance (m)") == null || csvRecord.get("Covered distance (m)").isEmpty()) {
+            return "Covered distance (m) field is empty";
+        }
+        if (csvRecord.get("Duration (sec.)") == null || csvRecord.get("Duration (sec.)").isEmpty()) {
+            return "Duration (sec.) field is empty";
+        }
+        return null;
     }
 }
