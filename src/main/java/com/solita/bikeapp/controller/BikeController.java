@@ -1,54 +1,47 @@
 package com.solita.bikeapp.controller;
 
-import com.solita.bikeapp.message.Response;
 import com.solita.bikeapp.method.CSVReader;
 import com.solita.bikeapp.model.Bike;
 import com.solita.bikeapp.service.CSVService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
-@CrossOrigin("http://localhost:8080")
-@Controller
-@RequestMapping("/api/csv")
+@RestController
+@RequestMapping("/app")
 public class BikeController {
     @Autowired
-    CSVService fileService;
+    CSVReader reader;
+    @Autowired
+    CSVService service;
 
-    @PostMapping("/savetoDB")
-    public ResponseEntity<Response> savetoDB(@RequestParam("file") File file) {
-        String message;
-        if (CSVReader.isCSV(file)) {
-            try {
-                fileService.saveAllFilesInRepository();
-
-                message = "Files reading was successful!";
-                return ResponseEntity.status(HttpStatus.OK).body(new Response(message));
-            } catch (Exception e) {
-                message = "Files reading was not successful!";
-                return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new Response(message));
-            }
-        }
+    @GetMapping("/save")
+    public void save() throws IOException {
+        reader.readCSV();
+        service.saveAll();
     }
 
     @GetMapping("/bikes")
-    public ResponseEntity<List<Bike>> getAllBikes() {
-        try {
-            List<Bike> bikes = fileService.getAllBikes();
+    public ResponseEntity<?> getAllBikes(@RequestParam(defaultValue = "0") int pageNo,
+                                         @RequestParam(defaultValue = "10") int pageSize,
+                                         @RequestParam(defaultValue = "id") String sortBy) {
+        List<Bike> bikes = service.getAllBikes();
 
-            if (bikes.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-
-            return new ResponseEntity<>(bikes, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        if (pageNo >= 0) {
+            List<Bike> list = bikes.stream()
+                    .skip((long) pageNo * pageSize)
+                    .limit(pageSize)
+                    .collect(Collectors.toList());
+            return new ResponseEntity<>(list, HttpStatus.OK);
         }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
-
 }
