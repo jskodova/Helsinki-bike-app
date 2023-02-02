@@ -1,0 +1,47 @@
+<html>
+<head>
+    <title>Javascript Dashboard</title>
+    <script>
+      let page_size = 10;
+      let page = 0;
+      let objects = [];
+      function getObjects() {
+      }
+      function showObjects() {
+        let html = '';
+        let start_index = page * page_size;
+        let end_index = start_index + page_size;
+        for (let i = start_index; i < end_index && i < objects.length; i++) {
+          html += '<div class="object">' + objects[i].name + '</div>';
+        }
+        document.getElementById('dashboard').innerHTML = html;
+      }
+
+      function prevPage() {
+        if (page > 0) {
+          page--;
+          showObjects();
+        }
+      }
+
+      function nextPage() {
+        if (page < objects.length / page_size - 1) {
+          page++;
+          showObjects();
+        }
+      }
+
+      window.onload = function() {
+        getObjects();
+        showObjects();
+      };
+
+
+    </script>
+</head>
+<body>
+<div id="dashboard"></div>
+<button onclick="prevPage()">Previous Page</button>
+<button onclick="nextPage()">Next Page</button>
+</body>
+</html>
