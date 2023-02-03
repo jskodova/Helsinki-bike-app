@@ -1,7 +1,7 @@
 package com.solita.bikeapp.method;
 
-import com.solita.bikeapp.model.Bike;
-import com.solita.bikeapp.repository.BikeRepository;
+import com.solita.bikeapp.entity.JourneyEntity;
+import com.solita.bikeapp.repository.JourneyRepository;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -20,13 +20,13 @@ public class CSVReader {
 
     List<String> fileNames;
     static String[] HEADERS = {"Departure", "Return", "Departure station id", "Departure station name", "Return station id", "Return station name", "Covered distance (m)", "Duration (sec.)"};
-    public static List<Bike> bikes = new ArrayList<>();
+    public static List<JourneyEntity> journeys = new ArrayList<>();
     @Autowired
-    public final BikeRepository bikeRepository;
+    public final JourneyRepository journeyRepository;
 
-    public CSVReader(List<String> fileNames, BikeRepository bikeRepository) {
+    public CSVReader(List<String> fileNames, JourneyRepository journeyRepository) {
         this.fileNames = fileNames;
-        this.bikeRepository = bikeRepository;
+        this.journeyRepository = journeyRepository;
         fileNames.add("src/main/resources/csv/2021-05.csv");
     }
 
@@ -49,22 +49,22 @@ public class CSVReader {
                         System.out.println("Error in CSV File: " + csvError);
                         return;
                     }
-                    Bike bike = new Bike();
-                    bike.setDepartureTime(LocalDateTime.parse(csvRecord.get("Departure")));
-                    bike.setReturnTime(LocalDateTime.parse(csvRecord.get("Return")));
-                    bike.setDepStationID(Integer.parseInt(csvRecord.get("Departure station id")));
-                    bike.setDepStationName(csvRecord.get("Departure station name"));
-                    bike.setRetStationID(Integer.parseInt(csvRecord.get("Return station id")));
-                    bike.setRetStationName(csvRecord.get("Return station name"));
-                    bike.setDistance((Float.parseFloat(csvRecord.get("Covered distance (m)"))) / 10);
-                    bike.setDuration(Integer.parseInt(csvRecord.get("Duration (sec.)")));
+                    JourneyEntity journey = new JourneyEntity();
+                    journey.setDepartureTime(LocalDateTime.parse(csvRecord.get("Departure")));
+                    journey.setReturnTime(LocalDateTime.parse(csvRecord.get("Return")));
+                    journey.setDepStationID(Integer.parseInt(csvRecord.get("Departure station id")));
+                    journey.setDepStationName(csvRecord.get("Departure station name"));
+                    journey.setRetStationID(Integer.parseInt(csvRecord.get("Return station id")));
+                    journey.setRetStationName(csvRecord.get("Return station name"));
+                    journey.setDistance((Float.parseFloat(csvRecord.get("Covered distance (m)"))) / 10);
+                    journey.setDuration(Integer.parseInt(csvRecord.get("Duration (sec.)")));
 
-                    if (bike.getDistance() > 0.01 && bike.getDuration() > 10) {
-                        bikes.add(bike);
-                        bikeRepository.save(bike);
+                    if (journey.getDistance() > 0.01 && journey.getDuration() > 10) {
+                        journeys.add(journey);
+                        journeyRepository.save(journey);
                     }
-                    bikes.add(bike);
-                    bikeRepository.save(bike);
+                    journeys.add(journey);
+                    journeyRepository.save(journey);
                 }
             } finally {
                 fileReader.close();

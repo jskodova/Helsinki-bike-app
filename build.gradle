@@ -24,7 +24,9 @@ dependencies {
     implementation 'org.springframework.session:spring-session-core'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.apache.commons:commons-csv:1.9.0'
+    implementation 'commons-io:commons-io:2.5'
     implementation 'mysql:mysql-connector-java'
+    implementation 'junit:junit:4.13.1'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

@@ -1,4 +1,4 @@
-package com.solita.bikeapp.model;
+package com.solita.bikeapp.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,8 +8,8 @@ import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "bikes")
-public class Bike {
+@Table(name = "journeys")
+public class JourneyEntity {
 
     @Column(name = "departureTime")
     private LocalDateTime departureTime;
@@ -94,7 +94,7 @@ public class Bike {
         this.duration = duration;
     }
 
-    public Bike(LocalDateTime departureTime, LocalDateTime returnTime, int depStationID, String depStationName, int retStationID, String retStationName, float distance, int duration) {
+    public JourneyEntity(LocalDateTime departureTime, LocalDateTime returnTime, int depStationID, String depStationName, int retStationID, String retStationName, float distance, int duration) {
         this.departureTime = departureTime;
         this.returnTime = returnTime;
         this.depStationID = depStationID;
@@ -105,10 +105,10 @@ public class Bike {
         this.duration = duration;
     }
 
-    public Bike() {
+    public JourneyEntity() {
     }
 
-    public Bike(LocalDateTime departureTime, LocalDateTime returnTime, String depStationID, String depStationName, String retStationID, String retStationName, float distance, int duration) {
+    public JourneyEntity(LocalDateTime departureTime, LocalDateTime returnTime, String depStationID, String depStationName, String retStationID, String retStationName, float distance, int duration) {
     }
 
     @Override
