@@ -1,21 +1,21 @@
 package com.solita.bikeapp.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "journeys")
 public class JourneyEntity {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "journeyID")
+    private int journeyID;
     @Column(name = "departureTime")
     private LocalDateTime departureTime;
     @Column(name = "returnTime")
     private LocalDateTime returnTime;
-    @Id
     @Column(name = "depStationID")
     private int depStationID;
     @Column(name = "depStationName")
@@ -26,9 +26,70 @@ public class JourneyEntity {
     private String retStationName;
     @Column(name = "distance")
     private float distance;
+
+    public JourneyEntity(LocalDateTime departureTime, LocalDateTime returnTime, int depStationID, String depStationName, int retStationID, String retStationName, float distance, int duration) {
+        this.departureTime = departureTime;
+        this.returnTime = returnTime;
+        this.depStationID = depStationID;
+        this.depStationName = depStationName;
+        this.retStationID = retStationID;
+        this.retStationName = retStationName;
+        this.distance = distance;
+        this.duration = duration;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof JourneyEntity that)) return false;
+        return getJourneyID() == that.getJourneyID() && getDepStationID() == that.getDepStationID() && getRetStationID() == that.getRetStationID() && Float.compare(that.getDistance(), getDistance()) == 0 && getDuration() == that.getDuration() && Objects.equals(getDepartureTime(), that.getDepartureTime()) && Objects.equals(getReturnTime(), that.getReturnTime()) && Objects.equals(getDepStationName(), that.getDepStationName()) && Objects.equals(getRetStationName(), that.getRetStationName());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getJourneyID(), getDepartureTime(), getReturnTime(), getDepStationID(), getDepStationName(), getRetStationID(), getRetStationName(), getDistance(), getDuration());
+    }
+
     @Column(name = "duration")
     private int duration;
 
+    public JourneyEntity() {
+    }
+
+    public JourneyEntity(int journeyID, LocalDateTime departureTime, LocalDateTime returnTime, int depStationID, String depStationName, int retStationID, String retStationName, float distance, int duration) {
+        this.journeyID = journeyID;
+        this.departureTime = departureTime;
+        this.returnTime = returnTime;
+        this.depStationID = depStationID;
+        this.depStationName = depStationName;
+        this.retStationID = retStationID;
+        this.retStationName = retStationName;
+        this.distance = distance;
+        this.duration = duration;
+    }
+
+    @Override
+    public String toString() {
+        return "JourneyEntity{" +
+                "journeyID=" + journeyID +
+                ", departureTime=" + departureTime +
+                ", returnTime=" + returnTime +
+                ", depStationID=" + depStationID +
+                ", depStationName='" + depStationName + '\'' +
+                ", retStationID=" + retStationID +
+                ", retStationName='" + retStationName + '\'' +
+                ", distance=" + distance +
+                ", duration=" + duration +
+                '}';
+    }
+
+    public int getJourneyID() {
+        return journeyID;
+    }
+
+    public void setJourneyID(int journeyID) {
+        this.journeyID = journeyID;
+    }
 
     public LocalDateTime getDepartureTime() {
         return departureTime;
@@ -93,52 +154,4 @@ public class JourneyEntity {
     public void setDuration(int duration) {
         this.duration = duration;
     }
-
-    public JourneyEntity(LocalDateTime departureTime, LocalDateTime returnTime, int depStationID, String depStationName, int retStationID, String retStationName, float distance, int duration) {
-        this.departureTime = departureTime;
-        this.returnTime = returnTime;
-        this.depStationID = depStationID;
-        this.depStationName = depStationName;
-        this.retStationID = retStationID;
-        this.retStationName = retStationName;
-        this.distance = distance;
-        this.duration = duration;
-    }
-
-    public JourneyEntity() {
-    }
-
-    public JourneyEntity(LocalDateTime departureTime, LocalDateTime returnTime, String depStationID, String depStationName, String retStationID, String retStationName, float distance, int duration) {
-    }
-
-    @Override
-    public String toString() {
-        return "Bike{" +
-                "departureTime=" + departureTime +
-                ", returnTime=" + returnTime +
-                ", depStationID=" + depStationID +
-                ", depStationName='" + depStationName + '\'' +
-                ", retStationID=" + retStationID +
-                ", retStationName='" + retStationName + '\'' +
-                ", distance=" + distance +
-                ", duration=" + duration +
-                '}';
-    }
-
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
-    }
-
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
-
-
 }

@@ -6,6 +6,7 @@ import java.util.Objects;
 
 public class Journey {
 
+    private int journeyID;
     private LocalDateTime departureTime;
     private LocalDateTime returnTime;
     private int depStationID;
@@ -16,10 +17,43 @@ public class Journey {
     private int duration;
 
 
+    public Journey() {
+    }
+
+    public Journey(int journeyID, LocalDateTime departureTime, LocalDateTime returnTime, int depStationID, String depStationName, int retStationID, String retStationName, float distance, int duration) {
+        this.journeyID = journeyID;
+        this.departureTime = departureTime;
+        this.returnTime = returnTime;
+        this.depStationID = depStationID;
+        this.depStationName = depStationName;
+        this.retStationID = retStationID;
+        this.retStationName = retStationName;
+        this.distance = distance;
+        this.duration = duration;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Journey || o instanceof Integer)) return false;
+        if (o instanceof Journey journey) {
+            return getJourneyID() == journey.getJourneyID();
+        } else {
+            int journeyID = (int) o;
+            return getJourneyID() == journeyID;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getJourneyID());
+    }
+
     @Override
     public String toString() {
         return "Journey{" +
-                "departureTime=" + departureTime +
+                "journeyID=" + journeyID +
+                ", departureTime=" + departureTime +
                 ", returnTime=" + returnTime +
                 ", depStationID=" + depStationID +
                 ", depStationName='" + depStationName + '\'' +
@@ -30,17 +64,12 @@ public class Journey {
                 '}';
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Journey journey = (Journey) o;
-        return depStationID == journey.depStationID && retStationID == journey.retStationID && Float.compare(journey.distance, distance) == 0 && duration == journey.duration && Objects.equals(departureTime, journey.departureTime) && Objects.equals(returnTime, journey.returnTime) && Objects.equals(depStationName, journey.depStationName) && Objects.equals(retStationName, journey.retStationName);
+    public int getJourneyID() {
+        return journeyID;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(departureTime, returnTime, depStationID, depStationName, retStationID, retStationName, distance, duration);
+    public void setJourneyID(int journeyID) {
+        this.journeyID = journeyID;
     }
 
     public LocalDateTime getDepartureTime() {
@@ -85,6 +114,17 @@ public class Journey {
 
     public String getRetStationName() {
         return retStationName;
+    }
+
+    public Journey(LocalDateTime departureTime, LocalDateTime returnTime, int depStationID, String depStationName, int retStationID, String retStationName, float distance, int duration) {
+        this.departureTime = departureTime;
+        this.returnTime = returnTime;
+        this.depStationID = depStationID;
+        this.depStationName = depStationName;
+        this.retStationID = retStationID;
+        this.retStationName = retStationName;
+        this.distance = distance;
+        this.duration = duration;
     }
 
     public void setRetStationName(String retStationName) {
