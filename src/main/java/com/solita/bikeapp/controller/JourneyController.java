@@ -5,13 +5,10 @@ import com.solita.bikeapp.method.CSVReader;
 import com.solita.bikeapp.repository.JourneyRepository;
 import com.solita.bikeapp.service.AppService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -32,8 +29,9 @@ public class JourneyController {
     }
 
     @GetMapping("/journeys")
-    public List<JourneyEntity> getAllJourneys() {
-        return service.getAllJourneys();
+    public Page<JourneyEntity> getAllJourneys(@RequestParam(value = "page", defaultValue = "0") int page,
+                                              @RequestParam(value = "size", defaultValue = "10") int size) {
+        return service.getAllJourneys(page, size);
     }
 
 }

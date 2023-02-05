@@ -32,7 +32,6 @@ dependencies {
     implementation 'mysql:mysql-connector-java'
     implementation 'junit:junit:4.13.1'
     implementation 'org.junit.jupiter:junit-jupiter-api:5.9.1'
-    implementation 'org.springframework:spring-dao:2.0.8'
     implementation 'org.mockito:mockito-core:3.+'
     implementation 'org.mockito:junit-jupiter:2.20.0'
     implementation 'org.mockito:mockito-junit-jupiter:4.8.1'
