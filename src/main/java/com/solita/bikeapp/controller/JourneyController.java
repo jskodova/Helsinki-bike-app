@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -32,6 +33,11 @@ public class JourneyController {
     public Page<JourneyEntity> getAllJourneys(@RequestParam(value = "page", defaultValue = "0") int page,
                                               @RequestParam(value = "size", defaultValue = "10") int size) {
         return service.getAllJourneys(page, size);
+    }
+
+    @GetMapping("/journeys/{journeyID}")
+    public Optional<JourneyEntity> getJourneyByID(@PathVariable long journeyID) {
+        return repository.findById(journeyID);
     }
 
 }
