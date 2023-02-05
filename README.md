@@ -17,4 +17,4 @@ The app includes:
     docker run --name helsinkibikeDB -p 3306:3306 -e MYSQL_ROOT_PASSWORD=password -d mysql:latest
 3. Run the backend app using your IDE of choice (the app was created using IntelliJ)
 4. Access the endpoints using the url http://localhost:8080/api/journeys
-5.Run the frontend React app using npm start
+5. Run the frontend React app using npm start
