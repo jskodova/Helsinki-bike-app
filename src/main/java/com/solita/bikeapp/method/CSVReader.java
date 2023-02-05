@@ -15,21 +15,31 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+//Service for reading the csv files and adding them to db
 @Service
 public class CSVReader {
 
+    //List of csv files
     List<String> fileNames;
+
+    //setting headers for the csv files so they can be ignored, also avoids the byte reading error with CSV Parser
     static String[] HEADERS = {"Departure", "Return", "Departure station id", "Departure station name", "Return station id", "Return station name", "Covered distance (m)", "Duration (sec.)"};
+
     public static List<JourneyEntity> journeys = new ArrayList<>();
     @Autowired
     public final JourneyRepository journeyRepository;
 
+    //this constructor with added csv files, only one is added because of size restrictions
     public CSVReader(List<String> fileNames, JourneyRepository journeyRepository) {
         this.fileNames = fileNames;
         this.journeyRepository = journeyRepository;
         fileNames.add("src/main/resources/csv/2021-05.csv");
+        //these csv were too big to put on github
+        //fileNames.add("src/main/resources/csv/2021-06.csv");
+        //fileNames.add("src/main/resources/csv/2021-07.csv");
     }
 
+    //reads the csv using BufferedReader and parses it to a JourneyEntity
     public void readCSV() throws IOException {
         for (String fileName : fileNames) {
             final BufferedReader fileReader = new BufferedReader(new FileReader((fileName)));
@@ -42,6 +52,7 @@ public class CSVReader {
                             .setSkipHeaderRecord(true)
                             .setTrim(true)
                             .build());
+            //looking for errors in the csv file
             try {
                 for (final CSVRecord csvRecord : csvParser) {
                     String csvError = validateCsvRecord(csvRecord);
@@ -72,6 +83,7 @@ public class CSVReader {
         }
     }
 
+    //simple csv validation
     private String validateCsvRecord(CSVRecord csvRecord) {
         if (csvRecord.get("Departure") == null || csvRecord.get("Departure").isEmpty()) {
             return "Departure field is empty";

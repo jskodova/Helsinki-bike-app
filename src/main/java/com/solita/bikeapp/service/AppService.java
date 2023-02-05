@@ -18,11 +18,13 @@ public class AppService {
     @Autowired
     CSVReader reader;
 
+    //saves all entities in journeyrepository to the db
     public void saveAll() throws IOException {
         reader.readCSV();
         journeyRepository.saveAll(CSVReader.journeys);
     }
 
+    //gets all journeys from the db
     public Page<JourneyEntity> getAllJourneys(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return journeyRepository.findAll(pageable);
