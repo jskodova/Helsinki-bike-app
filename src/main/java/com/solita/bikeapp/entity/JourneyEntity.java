@@ -27,17 +27,6 @@ public class JourneyEntity {
     @Column(name = "distance")
     private float distance;
 
-    public JourneyEntity(LocalDateTime departureTime, LocalDateTime returnTime, int depStationID, String depStationName, int retStationID, String retStationName, float distance, int duration) {
-        this.departureTime = departureTime;
-        this.returnTime = returnTime;
-        this.depStationID = depStationID;
-        this.depStationName = depStationName;
-        this.retStationID = retStationID;
-        this.retStationName = retStationName;
-        this.distance = distance;
-        this.duration = duration;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -54,18 +43,6 @@ public class JourneyEntity {
     private int duration;
 
     public JourneyEntity() {
-    }
-
-    public JourneyEntity(int journeyID, LocalDateTime departureTime, LocalDateTime returnTime, int depStationID, String depStationName, int retStationID, String retStationName, float distance, int duration) {
-        this.journeyID = journeyID;
-        this.departureTime = departureTime;
-        this.returnTime = returnTime;
-        this.depStationID = depStationID;
-        this.depStationName = depStationName;
-        this.retStationID = retStationID;
-        this.retStationName = retStationName;
-        this.distance = distance;
-        this.duration = duration;
     }
 
     @Override
