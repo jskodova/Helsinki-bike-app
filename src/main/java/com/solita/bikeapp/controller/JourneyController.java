@@ -36,5 +36,4 @@ public class JourneyController {
         return service.getAllJourneys();
     }
 
-
 }

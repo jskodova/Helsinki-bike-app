@@ -12,17 +12,17 @@ import java.util.List;
 @Service
 public class AppService {
     @Autowired
-    JourneyRepository repository;
+    JourneyRepository journeyRepository;
     @Autowired
     CSVReader reader;
 
     public void saveAll() throws IOException {
         reader.readCSV();
-        repository.saveAll(CSVReader.journeys);
+        journeyRepository.saveAll(CSVReader.journeys);
     }
 
     public List<JourneyEntity> getAllJourneys() {
-        return repository.findAll();
+        return journeyRepository.findAll();
     }
 
 }
