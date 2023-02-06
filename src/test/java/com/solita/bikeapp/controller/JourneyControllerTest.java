@@ -1,60 +1,70 @@
 package com.solita.bikeapp.controller;
 
-import com.solita.bikeapp.entity.JourneyEntity;
 import com.solita.bikeapp.method.CSVReader;
 import com.solita.bikeapp.repository.JourneyRepository;
 import com.solita.bikeapp.repository.StationRepository;
 import com.solita.bikeapp.service.AppService;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(SpringExtension.class)
+@WebMvcTest(JourneyController.class)
 class JourneyControllerTest {
-    @Mock
-    AppService service;
-    @Mock
-    CSVReader reader;
 
-    @InjectMocks
-    JourneyController controller;
-    @Mock
-    JourneyRepository repository;
-    @Mock
-    StationRepository stationRepository;
+    @Autowired
+    private MockMvc mockMvc;
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.initMocks(this);
+    @MockBean
+    private CSVReader mockReader;
+    @MockBean
+    private AppService mockService;
+    @MockBean
+    private JourneyRepository mockRepository;
+    @MockBean
+    private StationRepository mockStationRepository;
+
+    @Test
+    void testGetAllJourneys_AppServiceReturnsNoItems() throws Exception {
+        // Setup
+        when(mockService.getAllJourneys()).thenReturn(Collections.emptyList());
+
+        // Run the test
+        final MockHttpServletResponse response = mockMvc.perform(get("/api/journeys")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andReturn().getResponse();
+
+        // Verify the results
+        assertEquals(HttpStatus.OK.value(), response.getStatus());
+        assertEquals("[]", response.getContentAsString());
     }
 
     @Test
-    @DisplayName("Should return all journeys when the page and size are not specified")
-    void getAllJourneysWhenPageAndSizeAreNotSpecified() {
-        Page<JourneyEntity> journeys =
-                new PageImpl<>(Collections.singletonList(new JourneyEntity()));
-        when(service.getAllJourneys(0, 10)).thenReturn(journeys);
-        assertEquals(journeys, controller.getAllJourneys(0, 10));
-    }
+    void testGetAllStations_AppServiceReturnsNoItems() throws Exception {
+        // Setup
+        when(mockService.getAllStations()).thenReturn(Collections.emptyList());
 
-    @Test
-    @DisplayName("Should return journeys in the page when the page is specified")
-    void getAllJourneysWhenPageIsSpecified() {
-        Page<JourneyEntity> journeys =
-                new PageImpl<>(Collections.singletonList(new JourneyEntity()));
-        when(service.getAllJourneys(1, 10)).thenReturn(journeys);
-        assertEquals(journeys, controller.getAllJourneys(1, 10));
+        // Run the test
+        final MockHttpServletResponse response = mockMvc.perform(get("/api/stations")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andReturn().getResponse();
+
+        // Verify the results
+        assertEquals(HttpStatus.OK.value(), response.getStatus());
+        assertEquals("[]", response.getContentAsString());
     }
 }
+
