@@ -4,12 +4,10 @@ import com.solita.bikeapp.entity.JourneyEntity;
 import com.solita.bikeapp.method.CSVReader;
 import com.solita.bikeapp.repository.JourneyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.List;
 
 @Service
 public class AppService {
@@ -25,9 +23,8 @@ public class AppService {
     }
 
     //gets all journeys from the db
-    public Page<JourneyEntity> getAllJourneys(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return journeyRepository.findAll(pageable);
+    public List<JourneyEntity> getAllJourneys() {
+        return journeyRepository.findAll();
     }
 
 }

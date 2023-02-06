@@ -15,7 +15,4 @@ public interface StationRepository extends JpaRepository<StationEntity, Long> {
     @Query("SELECT j.retStationName, COUNT(j.retStationName) FROM JourneyEntity j GROUP BY j.retStationName")
     List<String[]> countUniqueRetStationName(int page, int size);
 
-
-    @Query("SELECT j.depStationName, COUNT(DISTINCT j.depStationName) + COUNT(DISTINCT j.retStationName) FROM JourneyEntity j GROUP BY j.depStationName, j.retStationName;")
-    List<String[]> countStationOccurences();
 }

@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +44,7 @@ public class CSVReader {
     //reads the csv using BufferedReader and parses it to a JourneyEntity
     public void readCSV() throws IOException {
         for (String fileName : fileNames) {
-            final BufferedReader fileReader = new BufferedReader(new FileReader((fileName)));
+            final BufferedReader fileReader = new BufferedReader((new InputStreamReader(new FileInputStream(fileName), StandardCharsets.UTF_8)));
             System.out.print("Trying to read csv");
 
             CSVParser csvParser = new CSVParser(fileReader,
