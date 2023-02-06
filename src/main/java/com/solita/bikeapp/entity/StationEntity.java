@@ -6,6 +6,20 @@ import jakarta.persistence.Id;
 @Entity
 public class StationEntity {
     @Id
+    public int stationID;
+    public String stationName;
+    public String address;
+    public String city;
+    public float coorX;
+    public float coorY;
+
+    public int countRet;
+    public int countDep;
+
+
+    public StationEntity() {
+    }
+
     public int getStationID() {
         return stationID;
     }
@@ -20,6 +34,38 @@ public class StationEntity {
 
     public void setStationName(String stationName) {
         this.stationName = stationName;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public float getCoorX() {
+        return coorX;
+    }
+
+    public void setCoorX(float coorX) {
+        this.coorX = coorX;
+    }
+
+    public float getCoorY() {
+        return coorY;
+    }
+
+    public void setCoorY(float coorY) {
+        this.coorY = coorY;
     }
 
     public int getCountRet() {
@@ -38,8 +84,14 @@ public class StationEntity {
         this.countDep = countDep;
     }
 
-    public int stationID;
-    public String stationName;
-    public int countRet;
-    public int countDep;
+    public StationEntity(int stationID, String stationName, String address, String city, float coorX, float coorY, int countRet, int countDep) {
+        this.stationID = stationID;
+        this.stationName = stationName;
+        this.address = address;
+        this.city = city;
+        this.coorX = coorX;
+        this.coorY = coorY;
+        this.countRet = countRet;
+        this.countDep = countDep;
+    }
 }
