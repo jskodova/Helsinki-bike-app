@@ -1,6 +1,7 @@
 package com.solita.bikeapp.controller;
 
 import com.solita.bikeapp.entity.JourneyEntity;
+import com.solita.bikeapp.entity.StationEntity;
 import com.solita.bikeapp.method.CSVReader;
 import com.solita.bikeapp.repository.JourneyRepository;
 import com.solita.bikeapp.repository.StationRepository;
@@ -9,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,10 +30,17 @@ public class JourneyController {
 
     //saves all journeys
     @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping("/saveAll")
-    public void save() throws IOException {
+    @GetMapping("/saveAllJourneys")
+    public void saveJourneys() throws IOException {
         reader.readCSV();
         service.saveAll();
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping("/saveAllStations")
+    public void saveStations() throws IOException {
+        reader.readAddress();
+        service.saveAllStations();
     }
 
     //displays all journeys
@@ -43,25 +50,17 @@ public class JourneyController {
         return service.getAllJourneys();
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping("/stations")
+    public List<StationEntity> getAllStations() {
+        return service.getAllStations();
+    }
+
     //displays a specific journey
     @CrossOrigin(origins = "http://localhost:3000")
-
     @GetMapping("/journeys/{journeyID}")
     public Optional<JourneyEntity> getJourneyByID(@PathVariable long journeyID) {
         return repository.findById(journeyID);
     }
-
-    //endpoint for seeing unique stations and their count of occurences
-    @GetMapping("/stations")
-    public List<String[]> getUniqueStationNames(@RequestParam(name = "page", required = false, defaultValue = "0") int page,
-                                                @RequestParam(name = "size", required = false, defaultValue = "10") int size) {
-        List<String[]> depStationNames = stationRepository.countUniqueDepStationName(page, size);
-        List<String[]> retStationNames = stationRepository.countUniqueRetStationName(page, size);
-        List<String[]> allStationNames = new ArrayList<>();
-        allStationNames.addAll(depStationNames);
-        allStationNames.addAll(retStationNames);
-        return allStationNames;
-    }
-
 
 }
