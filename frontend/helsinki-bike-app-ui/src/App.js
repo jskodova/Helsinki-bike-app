@@ -1,4 +1,5 @@
 import AllJourneys from './pages/AllJourneys';
+import AllStations from './pages/AllStations';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import React from 'react';
 import './index.css';
@@ -11,7 +12,7 @@ export default function App() {
         <Route path="/" element={<Layout />}>
           <Route index/>
           <Route path="journeys" element={<AllJourneys />} />
-          <Route path="contact"/>
+          <Route path="stations" element={<AllStations />} />
           <Route path="*"/>
         </Route>
       </Routes>
