@@ -63,4 +63,21 @@ public class JourneyController {
         return repository.findById(journeyID);
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping("/stations/{stationID}")
+    public Optional<StationEntity> getStationByID(@PathVariable long stationID) {
+        return stationRepository.findById(stationID);
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @PostMapping("/newjourney")
+    public JourneyEntity createJourney(@RequestBody JourneyEntity journey) {
+        return repository.save(journey);
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @PostMapping("/newstation")
+    public StationEntity createStation(@RequestBody StationEntity station) {
+        return stationRepository.save(station);
+    }
 }

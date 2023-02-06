@@ -120,17 +120,23 @@ public class CSVReader {
 
                     int occurrenceDep = 0;
                     int occurrenceRet = 0;
+                    double totalDepDistance = 0.00;
+                    double totalRetDistance = 0.00;
                     List<JourneyEntity> journeys = journeyRepository.findAll();
                     for (JourneyEntity journey : journeys) {
                         if (station.getStationName().equals(journey.getDepStationName())) {
                             occurrenceDep++;
+                            totalDepDistance += journey.getDistance();
                         }
                         if (station.getStationName().equals(journey.getRetStationName())) {
                             occurrenceRet++;
+                            totalRetDistance += journey.getDistance();
                         }
                     }
                     station.setCountDep(occurrenceDep);
+                    station.setAvgDep(totalDepDistance / occurrenceDep);
                     station.setCountRet(occurrenceRet);
+                    station.setAvgRet(totalRetDistance / occurrenceRet);
                     stations.add(station);
                     stationRepository.save(station);
                 }

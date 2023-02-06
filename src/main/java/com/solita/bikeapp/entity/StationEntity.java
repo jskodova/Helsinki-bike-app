@@ -16,6 +16,31 @@ public class StationEntity {
     public int countRet;
     public int countDep;
 
+    public double avgRet;
+    public double avgDep;
+
+
+    public double getAvgRet() {
+        return avgRet;
+    }
+
+    public void setAvgRet(double avgRet) {
+        this.avgRet = avgRet;
+    }
+
+    public double getAvgDep() {
+        return avgDep;
+    }
+
+    public StationEntity(String stationName, String address, String city) {
+        this.stationName = stationName;
+        this.address = address;
+        this.city = city;
+    }
+
+    public void setAvgDep(double avgDep) {
+        this.avgDep = avgDep;
+    }
 
     public StationEntity() {
     }
@@ -84,7 +109,7 @@ public class StationEntity {
         this.countDep = countDep;
     }
 
-    public StationEntity(int stationID, String stationName, String address, String city, float coorX, float coorY, int countRet, int countDep) {
+    public StationEntity(int stationID, String stationName, String address, String city, float coorX, float coorY, int countRet, int countDep, double avgRet, double avgDep) {
         this.stationID = stationID;
         this.stationName = stationName;
         this.address = address;
@@ -93,5 +118,7 @@ public class StationEntity {
         this.coorY = coorY;
         this.countRet = countRet;
         this.countDep = countDep;
+        this.avgRet = avgRet;
+        this.avgDep = avgDep;
     }
 }
