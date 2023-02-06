@@ -5,10 +5,12 @@ import com.solita.bikeapp.entity.StationEntity;
 import com.solita.bikeapp.method.CSVReader;
 import com.solita.bikeapp.repository.JourneyRepository;
 import com.solita.bikeapp.repository.StationRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
@@ -18,8 +20,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class AppServiceTest {
@@ -33,6 +34,11 @@ class AppServiceTest {
 
     @InjectMocks
     private AppService appServiceUnderTest;
+
+    @BeforeEach
+    public void setUp() {
+        MockitoAnnotations.initMocks(this);
+    }
 
     @Test
     void testSaveAll_CSVReaderThrowsIOException() throws Exception {
@@ -125,4 +131,20 @@ class AppServiceTest {
         // Verify the results
         assertEquals(Collections.emptyList(), result);
     }
+
+    @Test
+    public void testSaveAll() throws IOException {
+        appServiceUnderTest.saveAll();
+        verify(mockReader, times(1)).readCSV();
+        verify(mockJourneyRepository, times(1)).saveAll(CSVReader.journeys);
+    }
+
+    @Test
+    public void testSaveAllStations() throws IOException {
+        appServiceUnderTest.saveAllStations();
+        verify(mockReader, times(1)).readAddress();
+        verify(mockStationRepository, times(1)).saveAll(CSVReader.stations);
+    }
+
 }
+
