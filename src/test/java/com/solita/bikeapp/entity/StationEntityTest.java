@@ -8,6 +8,6 @@ class StationEntityTest {
 
     @BeforeEach
     void setUp() {
-        stationEntityUnderTest = new StationEntity(0, "stationName", "address", "city", 0.0f, 0.0f, 0, 0, 0.0, 0.0);
+        stationEntityUnderTest = new StationEntity(0, "stationName", "address", "city", 0.0f, 0.0f, 0, 0, 0, 0);
     }
 }

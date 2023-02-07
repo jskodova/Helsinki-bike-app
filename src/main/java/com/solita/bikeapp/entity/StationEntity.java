@@ -10,21 +10,21 @@ public class StationEntity {
     public String stationName;
     public String address;
     public String city;
-    public float coorX;
-    public float coorY;
+    public double coorX;
+    public double coorY;
 
     public int countRet;
     public int countDep;
 
-    public double avgRet;
-    public double avgDep;
+    public float avgRet;
+    public float avgDep;
 
 
     public double getAvgRet() {
         return avgRet;
     }
 
-    public void setAvgRet(double avgRet) {
+    public void setAvgRet(float avgRet) {
         this.avgRet = avgRet;
     }
 
@@ -38,7 +38,7 @@ public class StationEntity {
         this.city = city;
     }
 
-    public void setAvgDep(double avgDep) {
+    public void setAvgDep(float avgDep) {
         this.avgDep = avgDep;
     }
 
@@ -77,19 +77,19 @@ public class StationEntity {
         this.city = city;
     }
 
-    public float getCoorX() {
+    public double getCoorX() {
         return coorX;
     }
 
-    public void setCoorX(float coorX) {
+    public void setCoorX(double coorX) {
         this.coorX = coorX;
     }
 
-    public float getCoorY() {
+    public double getCoorY() {
         return coorY;
     }
 
-    public void setCoorY(float coorY) {
+    public void setCoorY(double coorY) {
         this.coorY = coorY;
     }
 
@@ -109,7 +109,7 @@ public class StationEntity {
         this.countDep = countDep;
     }
 
-    public StationEntity(int stationID, String stationName, String address, String city, float coorX, float coorY, int countRet, int countDep, double avgRet, double avgDep) {
+    public StationEntity(int stationID, String stationName, String address, String city, double coorX, double coorY, int countRet, int countDep, float avgRet, float avgDep) {
         this.stationID = stationID;
         this.stationName = stationName;
         this.address = address;

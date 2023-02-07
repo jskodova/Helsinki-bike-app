@@ -115,13 +115,13 @@ public class CSVReader {
                     station.setStationID(Integer.parseInt(addressRecord.get("ID")));
                     station.setAddress(addressRecord.get("Osoite"));
                     station.setCity(addressRecord.get("Kaupunki"));
-                    station.setCoorX(Float.parseFloat(addressRecord.get(("x"))));
-                    station.setCoorY(Float.parseFloat(addressRecord.get(("y"))));
+                    station.setCoorX(Double.parseDouble(addressRecord.get(("x"))));
+                    station.setCoorY(Double.parseDouble(addressRecord.get(("y"))));
 
                     int occurrenceDep = 0;
                     int occurrenceRet = 0;
-                    double totalDepDistance = 0.00;
-                    double totalRetDistance = 0.00;
+                    float totalDepDistance = 0;
+                    float totalRetDistance = 0;
                     List<JourneyEntity> journeys = journeyRepository.findAll();
                     for (JourneyEntity journey : journeys) {
                         if (station.getStationName().equals(journey.getDepStationName())) {
@@ -133,12 +133,18 @@ public class CSVReader {
                             totalRetDistance += journey.getDistance();
                         }
                     }
-                    station.setCountDep(occurrenceDep);
-                    station.setAvgDep(totalDepDistance / occurrenceDep);
-                    station.setCountRet(occurrenceRet);
-                    station.setAvgRet(totalRetDistance / occurrenceRet);
-                    stations.add(station);
-                    stationRepository.save(station);
+                    float AvgDepDistance = (totalDepDistance / occurrenceDep);
+                    float AvgRetDistance = (totalRetDistance / occurrenceRet);
+
+                    if (!Float.isNaN(AvgDepDistance) && !Float.isNaN(AvgRetDistance)) {
+                        station.setCountDep(occurrenceDep);
+                        station.setAvgDep(AvgDepDistance);
+                        station.setCountRet(occurrenceRet);
+                        station.setAvgRet(AvgRetDistance);
+                        System.out.println("Station: " + station.getAddress() + station.getAvgDep() + station.getAvgDep() + station.getCity() + station.getCoorX() + station.getCoorY() + station.getCountDep() + station.getAvgRet());
+                        stations.add(station);
+                        stationRepository.save(station);
+                    }
                 }
             } finally {
                 addressReader.close();

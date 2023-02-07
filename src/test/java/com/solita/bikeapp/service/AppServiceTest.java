@@ -111,7 +111,7 @@ class AppServiceTest {
         // Setup
         // Configure StationRepository.findAll(...).
         final List<StationEntity> stationEntities = List.of(
-                new StationEntity(0, "stationName", "address", "city", 0.0f, 0.0f, 0, 0, 0.0, 0.0));
+                new StationEntity(0, "stationName", "address", "city", 0.0f, 0.0f, 0, 0, 0, 0));
         when(mockStationRepository.findAll()).thenReturn(stationEntities);
 
         // Run the test
