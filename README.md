@@ -16,5 +16,6 @@ The app includes:
 2. Build a docker container using a command
     docker run --name helsinkibikeDB -p 3306:3306 -e MYSQL_ROOT_PASSWORD=password -d mysql:latest
 3. Run the backend app using your IDE of choice (the app was created using IntelliJ)
-4. Access the endpoints using the url http://localhost:8080/api/journeys
+4. Access the saveAll endpoint going to the url http://localhost:8080/api/saveAllJourneys to populate the table. This will take a long time due to the size of the file. I recommend interupting the process and starting the server again to procceed, unless you have time to wait
+5. Go to http://localhost:8080/api/saveAllStations to save the stations into the db
 5. Run the frontend React app using npm start
